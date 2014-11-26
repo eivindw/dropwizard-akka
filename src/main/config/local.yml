@@ -1,0 +1,5 @@
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      logFormat: "%date{ISO8601} %-5level %X{sourceThread:-unknown-thread} %logger{36} - %msg%n"
