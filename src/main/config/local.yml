@@ -1,5 +1,8 @@
+server:
+  requestLog:
+    appenders: []
 logging:
   level: INFO
   appenders:
     - type: console
-      logFormat: "%date{ISO8601} %-5level %X{sourceThread:-unknown-thread} %logger{36} - %msg%n"
+      logFormat: "%date{ISO8601} %-5level [%X{corId:-no-id}] [%thread] [%X{sourceThread:-unknown-thread}] [%X{akkaSource:-no-akka}] [%logger{36}] - %msg%n"

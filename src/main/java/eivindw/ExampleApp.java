@@ -5,6 +5,9 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.pattern.Patterns;
 import eivindw.akka.PingActor;
+import eivindw.akka.PingUntypedActor;
+import eivindw.api.CorIdFilter;
+import eivindw.api.TestResource;
 import eivindw.service.YoService;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
@@ -34,9 +37,13 @@ public class ExampleApp extends Application<Configuration> {
         MDC.put("sourceThread", Thread.currentThread().getName());
         log.info("Starting application");
 
-        final ActorSystem actorSystem = ActorSystem.create("ExampleSystem");
+        final ActorSystem actorSystem = ActorSystem.create("akkasys");
 
-        final ActorRef pinger = actorSystem.actorOf(Props.create(PingActor.class), "Pinger");
+        final ActorRef pinger =
+           actorSystem.actorOf(Props.create(PingActor.class), "Pinger");
+
+        final ActorRef pingerUntyped =
+           actorSystem.actorOf(Props.create(PingUntypedActor.class, pinger), "PingerUntyped");
 
         final Future<Object> pong = Patterns.ask(pinger, "ping", 100);
 
@@ -50,5 +57,8 @@ public class ExampleApp extends Application<Configuration> {
         log.info("Gots result: {}", result);
 
         log.info("Yoz: {}", javaFuture.get());
+
+        env.jersey().register(new TestResource(pingerUntyped));
+        env.jersey().register(CorIdFilter.class);
     }
 }
