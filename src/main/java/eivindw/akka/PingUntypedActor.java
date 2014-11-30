@@ -30,6 +30,9 @@ public class PingUntypedActor extends UntypedActor {
          sender().tell("Howdie " + msg.messageData(), self());
 
          log.clearMDC();
+      } else {
+         log.info("Unexpected message: {}", message);
+         unhandled(message);
       }
    }
 }
