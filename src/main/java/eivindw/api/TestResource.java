@@ -48,4 +48,15 @@ public class TestResource {
          "age", 42
       );
    }
+
+   @GET
+   @Path("other")
+   public Map test() throws Exception {
+      log.info("Got other request");
+
+      return ImmutableMap.of(
+         "name", "Other",
+         "age", 27
+      );
+   }
 }

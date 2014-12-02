@@ -11,6 +11,6 @@ public class CorIdFilter implements ContainerRequestFilter {
 
    @Override
    public void filter(ContainerRequestContext ctx) throws IOException {
-      MDC.put("corId", UUID.randomUUID().toString());
+      MDC.put("corId", Integer.toHexString(UUID.randomUUID().hashCode()));
    }
 }
